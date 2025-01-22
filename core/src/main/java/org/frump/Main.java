@@ -60,8 +60,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         bufferShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         bufferShapeRenderer.setColor(Color.RED);
         //draw a 1 pixel dot at 0,0 and 10,10 to be known coordinates.
-        bufferShapeRenderer.rect(0,0,1,1);
-        bufferShapeRenderer.rect(10,10,1,1);
+        for(int x = 0; x < 15;x++) {
+            bufferShapeRenderer.rect(5*x, 5*x, 1, 1);
+        }
         bufferShapeRenderer.end();
         fBuffer.end();
 
@@ -79,6 +80,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
         //get world coordinates where we clicked(this will get where we clicked on the framebuffer.(assuming we clicked it))
         Vector3 worldCoords = mainCamera.unproject(new Vector3(screenX, screenY, 0));
         output += " MainCameraWorldCoords("+worldCoords.x+","+worldCoords.y+")";
+
 
         //since we now have world coords, we can determine where we clicked on the framebuffer by unprojecting with its camera?
         Vector3 inBufferWorldCoords = bufferCamera.unproject(worldCoords);
@@ -125,6 +127,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
+        bufferCamera.zoom += amountY/10;
+        bufferCamera.update();
         return false;
     }
 }
